@@ -21,6 +21,9 @@ class _AlarmWritePageState extends State<AlarmWritePage> {
 
   bool? _isRepeatWeek = false;
 
+  int maxVol = 10;
+  int currentVol = 5;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -67,71 +70,112 @@ class _AlarmWritePageState extends State<AlarmWritePage> {
         ),
         body: Column(
           children: [
-            SingleChildScrollView(
+            Expanded(
+             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
 
-                  SizedBox(height: 10,),
+                        SizedBox(height: 10,),
 
-                  Container(
-                    child: createInlinePicker(
-                        elevation: 1,
-                        value: _time,
-                        onChange: onTimeChanged,
-                        minuteInterval: MinuteInterval.ONE,
-                        iosStylePicker: false,
-                        minHour: 0,
-                        maxHour: 23,
-                        is24HrFormat: false,
-                        isOnChangeValueMode: true,
-                        dialogInsetPadding: EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0)),
-                  ),
-
-                  SizedBox(height: 10,),
-
-                  WeekChecker(),    // 요일 선택
-
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text("매주반복", style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),),
-                        Checkbox(
-                          side: BorderSide(
-                            color: Colors.white,
-                            width: 1.5
-                          ),
-                            checkColor: Colors.green,
-                            value: _isRepeatWeek,
-                            onChanged: (value){
-                              setState(() {
-                                _isRepeatWeek = value;
-                              });
-                            },
+                        Container(
+                          child: createInlinePicker(
+                              elevation: 1,
+                              value: _time,
+                              onChange: onTimeChanged,
+                              minuteInterval: MinuteInterval.ONE,
+                              iosStylePicker: false,
+                              minHour: 0,
+                              maxHour: 23,
+                              is24HrFormat: false,
+                              isOnChangeValueMode: true,
+                              dialogInsetPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 10.0)),
                         ),
+
+                        SizedBox(height: 10,),
+
+                        WeekChecker(),    // 요일 선택
+
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text("매주반복", style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),),
+                              Checkbox(
+                                side: BorderSide(
+                                    color: Colors.white,
+                                    width: 1.5
+                                ),
+                                checkColor: Colors.green,
+                                value: _isRepeatWeek,
+                                onChanged: (value){
+                                  setState(() {
+                                    _isRepeatWeek = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Divider(color: Colors.grey,),
+
+                        ListTile(
+                          title: Text("알람 방식", style: TextStyle(color: Colors.white),),
+                          subtitle: Text("벨소리", style: TextStyle(color: Colors.grey),),
+                          trailing: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blueGrey,
+                              shape: BoxShape.circle,
+                            ),
+                            width: 40,
+                            child:  Icon(Icons.arrow_forward_ios_rounded, color: Colors.white,size: 20,),
+                          ),
+                        ),
+                        Divider(color: Colors.grey,),
+                        ListTile(
+                          title: Text("알람음", style: TextStyle(color: Colors.white),),
+                          subtitle: Text("기본 알림음", style: TextStyle(color: Colors.grey),),
+                          trailing: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blueGrey,
+                              shape: BoxShape.circle,
+                            ),
+                            width: 40,
+                            child:  Icon(Icons.arrow_forward_ios_rounded, color: Colors.white,size: 20,),
+                          ),
+                        ),
+                        Divider(color: Colors.grey,),
+                        ListTile(
+                          leading: Icon(Icons.volume_up, color: Colors.white,),
+                          trailing: Slider(
+                            value: currentVol / 1.0,
+                            divisions: maxVol,
+                            max: maxVol / 1.0,
+                            min: 0,
+                            onChanged: (double d){
+                              print(d);
+                            },
+
+                          ),
+                        ),
+
+
+
+
+
+
+
                       ],
                     ),
-                  ),
 
-                  SizedBox(height: 10,),
 
-                  ListTile(
-                    title: Text("알림음", style: TextStyle(color: Colors.white),),
-                    subtitle: Text("기본 알림음", style: TextStyle(color: Colors.white),),
-                    trailing: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.blueGrey,
-                          shape: BoxShape.circle,
-                      ),
-                      width: 40,
-                      child:  Icon(Icons.arrow_forward_ios_rounded, color: Colors.white,size: 20,),
-                    ),
-                  ),
-                ],
-              ),
+
+
+
             ),
+    )
           ],
         ),
       ),
