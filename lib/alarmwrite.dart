@@ -20,9 +20,12 @@ class _AlarmWritePageState extends State<AlarmWritePage> {
   TimeOfDay _time = TimeOfDay.now();
 
   bool? _isRepeatWeek = false;
+  double _Volvalue = 5.0;
+  bool _locationToggle = false;
+  bool _repeatToggle = false;
+  bool _smartToggle = false;
 
-  int maxVol = 10;
-  int currentVol = 5;
+  final AlarmNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +136,9 @@ class _AlarmWritePageState extends State<AlarmWritePage> {
                             child:  Icon(Icons.arrow_forward_ios_rounded, color: Colors.white,size: 20,),
                           ),
                         ),
+
                         Divider(color: Colors.grey,),
+
                         ListTile(
                           title: Text("알람음", style: TextStyle(color: Colors.white),),
                           subtitle: Text("기본 알림음", style: TextStyle(color: Colors.grey),),
@@ -146,26 +151,119 @@ class _AlarmWritePageState extends State<AlarmWritePage> {
                             child:  Icon(Icons.arrow_forward_ios_rounded, color: Colors.white,size: 20,),
                           ),
                         ),
-                        Divider(color: Colors.grey,),
-                        ListTile(
-                          leading: Icon(Icons.volume_up, color: Colors.white,),
-                          trailing: Slider(
-                            value: currentVol / 1.0,
-                            divisions: maxVol,
-                            max: maxVol / 1.0,
-                            min: 0,
-                            onChanged: (double d){
-                              print(d);
-                            },
 
-                          ),
+                        Divider(color: Colors.grey,),
+
+                       Container(
+                         child: Row(
+                           children: [
+                             Container(
+                               margin: EdgeInsets.only(left: 20),
+                               child: Icon(Icons.volume_up, color: Colors.white,),
+                             ),
+                             Container(
+                               width: MediaQuery.of(context).size.width - 50,
+                               child: Slider(
+                                 min: 0.0,
+                                 max: 100.0,
+                                 value: _Volvalue,
+                                 onChanged: (value) {
+                                   setState(() {
+                                     _Volvalue = value;
+                                     print(value);
+                                   });
+                                 },
+                               )
+                             ),
+
+                           ],
+                         ),
+                       ),
+
+                        Divider(color: Colors.grey,),
+                        
+                      SwitchListTile.adaptive(
+                          title: Text("위치 알람", style: TextStyle(color: Colors.white),),
+                          value: _locationToggle,
+                          onChanged: (value){
+                            setState(() {
+                              _locationToggle = value;
+                            });
+                            print(value);
+                          }
+                      ),
+
+                        Divider(color: Colors.grey,),
+
+                        SwitchListTile.adaptive(
+                            title: Text("다시 알람", style: TextStyle(color: Colors.white),),
+                            subtitle: Text("5분, 3회", style: TextStyle(color: Colors.grey),),
+                            value: _repeatToggle,
+                            onChanged: (value){
+                              setState(() {
+                                _repeatToggle = value;
+                              });
+                              print(value);
+                            }
                         ),
 
+                        Divider(color: Colors.grey,),
+
+                        SwitchListTile.adaptive(
+                            title: Text("스마트 알람", style: TextStyle(color: Colors.white),),
+                            subtitle: Text("3분, 요정의 분수", style: TextStyle(color: Colors.grey),),
+                            value: _smartToggle,
+                            onChanged: (value){
+                              setState(() {
+                                _smartToggle = value;
+                              });
+                              print(value);
+                            }
+                        ),
+
+                        Divider(color: Colors.grey,),
+
+                        Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 15),
+                                child:  Text("이름", style: TextStyle(color: Colors.white, fontSize: 17),),
+                              ),
+                              SizedBox(height: 10,),
+
+                              Container(
+                                margin: EdgeInsets.only(left: 15),
+                                child: TextField(
+                                  controller: AlarmNameController,
+                                  decoration: InputDecoration(
+                                    labelText: '알람',
+                                    //hintText: 'Enter your email',
+                                    labelStyle: TextStyle(color: Colors.grey, fontSize: 17),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                      borderSide: BorderSide(width: 1, color: Colors.grey),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                      borderSide: BorderSide(width: 1, color: Colors.grey),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                    ),
+                                  ),
+                                  keyboardType: TextInputType.text,
+                                ),
+                              ),
 
 
 
-
-
+                            ],
+                          ),
+                        ),
 
                       ],
                     ),
